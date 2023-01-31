@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ellipse Parametric Curve</title>
+</head>
+
+<!-- GLSL for WebGL 1.0 - The shaders can be modified for ES 3.0 if WebGL 2.0 is supported. -->
+<!-- Vertex shader -->
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute vec4 vPosition;
+
+void main()
+{
+    gl_Position = vPosition;
+}
+</script>
+
+<!-- Fragment shader -->
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+void main()
+{
+	// User-specified colour (R, G, B, a = 1)
+    gl_FragColor = vec4( 0.3, 0.8, 0.4, 1.0 );
+}
+</script>
+
+
+<!-- Include the needed Javascript files. -->
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="EllipseExample.js"></script>
+
+<body>
+
+<!-- Input/Interaction -->
+<label for = "x0_label">x0</label>
+<input type = "text" id = "x0" name = "x0" value = "0.0">
+<label for = "y0_label">&nbsp;&nbsp;y0</label>
+<input type="text" id = "y0" name = "y0" value = "0.0">
+<label for = "a_label">&nbsp;&nbsp;a</label>
+<input type = "text" id = "a" name = "a" value = "0.5">
+<label for = "b_label">&nbsp;&nbsp;b</label>
+<input type = "text" id = "b" name = "b" value = "0.5">
+<p><button id = "render">Render the Ellipse</button></p>
+<br><br>
+
+<!-- Define the canvas (512 x 512). -->
+<canvas id="gl-canvas" width="512" height="512">>
+Your browser does not support the HTML5 canvas element.
+</canvas>
+
+
+</body>
+</html>
