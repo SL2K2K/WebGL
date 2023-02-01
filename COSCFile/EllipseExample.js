@@ -50,11 +50,28 @@ window.onload = function init()
 		
 	// Vertices for the parametric curve of an ellipse/circle
 	var vertices = computeVertices(C);
+	 
 	
 	// Length of the vertex array
 	N = vertices.length;
 	
 	// Event listener (Render button)
+	document.getElementById("render").onclick = function() {
+		// Read the constants in the input boxes.
+		C = getParametricCurveConstants();
+		
+		console.log(C);
+		// Recompute the vertices.
+		vertices = computeVertices(C);
+		N = vertices.length;
+		// Update the data in the VBO.
+		gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
+		
+		// Render the geometry.
+		//render();
+		
+	};
+	
 
 
     // Load the data into the GPU.
@@ -77,6 +94,17 @@ window.onload = function init()
 // Get the constants for the parametric curve.
 /////////////////////////////////////////////////////
 function getParametricCurveConstants() {
+	// Define a structure with the fields as the input box data.
+	var C = {
+	    x0: parseFloat(document.getElementById("x0").value),
+	    y0: parseFloat(document.getElementById("y0").value),
+	    a: parseFloat(document.getElementById("a").value),
+	    b: parseFloat(document.getElementById("b").value)
+	    
+	}; // C
+	
+	// Return the input values
+	return(C);
 }	// getParametricCurveConstants()
 
 
@@ -84,6 +112,42 @@ function getParametricCurveConstants() {
 //	Compute the vertices of the ellipse or circle.
 /////////////////////////////////////////////////////
 function computeVertices(C) {
+	
+	// Initialize vertices
+	var vertices = [];
+	
+	var theta0;
+	var theta1;
+	var theta;
+	var dtheta;
+	var x;
+	var y;
+	
+	theta0 = 0.0;
+	theta1 = 2. * Math.PI;
+	
+	
+	// Number of vertices in the ellipse/circle
+	var n = 400;
+	
+	dtheta = (theta1 - theta0)/n;
+	// Initialize theta
+	theta = 0.0;
+	
+	//Calculate the vertices.
+	while (theta < theta1) {
+	
+		x = C.a * Math.cos(theta) + C.x0;
+		y = C.b * Math.sin(theta) + C.y0;
+		
+		vertices.push(vec2(x, y));
+		theta += dtheta;
+		
+	} // while()
+	
+	return(vertices);
+	
+	
 }	// computeVertices(C)
 
 
@@ -91,4 +155,10 @@ function computeVertices(C) {
 // Render the parametric curve (ellipse/circle).
 /////////////////////////////////////////////////////
 function render() {
+	
+	// Clear the display
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	
+	// Draw the geometry.
+	gl.drawArrays(gl.LINE_LOOP, 0, N);
 }	// render()
